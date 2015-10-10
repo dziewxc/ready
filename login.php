@@ -27,7 +27,7 @@ if(Input::exists()) {
             $errorList = new StdClass;
             $errorList->errors = array();
             $errorObj = new StdClass;
-            $errorObj->message = $error;
+            $errorObj->message = "You passed wrong data";
             $errorList->errors[] = $errorObj;
             echo json_encode($errorList);
         }

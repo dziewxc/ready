@@ -60,7 +60,6 @@ class DB
 				$x++;
 			}			
 			$sql = "INSERT INTO {$table} (`" . implode('`, `',$keys) . "`) VALUES ({$values})";
-            echo $sql;
 			if(!$this->query($sql, $data)->error()) {
 				return true;
 			}

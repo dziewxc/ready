@@ -11,15 +11,16 @@ function distance($lat1, $lon1, $lat2, $lon2) {
     
     return $distance;
 }
+
+$errorList = new StdClass;
+$errorList->errors = array();
+$errorObj = new StdClass;
+
 if(Input::exists('get')) {
     $key = base64_decode(Input::get('apikey'));
-    
     if(Input::get('apikey') === '')
     {
-        $errorList = new StdClass;
-        $errorList->errors = array();
-        $errorObj = new StdClass;
-        $errorObj->message = "You have to pass ApiKey as GET parameter";
+        $errorObj->message = "You have to pass APIKEY";
         $errorList->errors[] = $errorObj;
         echo json_encode($errorList);
         return true;
@@ -56,7 +57,7 @@ if(Input::exists('get')) {
                 'name' =>  Input::get('name'),
                 'distance' => $distance,
                 );
-                
+                //you can add only once for one person
             if(!$database->insert('users_data', $data)) {
                 throw new Exception('We have problem with adding data');
             } else
@@ -75,8 +76,6 @@ if(Input::exists('get')) {
                 die($e->getMessage());
             }
     } else {
-        $errorList = new StdClass;
-        $errorList->errors = array();
         foreach($validate->errors() as $error)
         {
             $errorObj = new StdClass;
@@ -86,4 +85,8 @@ if(Input::exists('get')) {
         echo json_encode($errorList);
         return true;
         }
-    }
+} else {
+    $errorObj->message = "You have to pass APIKEY";
+    $errorList->errors[] = $errorObj;
+    echo json_encode($errorList);
+}
