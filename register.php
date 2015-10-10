@@ -29,8 +29,10 @@ if(Input::exists()) {
                 'email' => Input::get('email'),
             ));
             
+            $apikey = base64_encode(Input::get('email') . "_" . Input::get('haslo'));
             $response = new StdClass;
             $response->status = "success";
+            $response->apikey = $apikey;
             $postData = new StdClass;
             foreach($_POST as $postKey =>$postValue)
             {

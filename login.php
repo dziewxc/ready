@@ -11,9 +11,11 @@ if(Input::exists()) {
         $user = new User();
         $login = $user->login(Input::get('email'), Input::get('haslo'));
         
+        $apikey = base64_encode(Input::get('email') . "_" . Input::get('haslo'));
         if($login) {
             $response = new StdClass;
             $response->status = "success";
+            $response->apikey = $apikey;
             $postData = new StdClass;
             foreach($_POST as $postKey =>$postValue)
             {
@@ -22,11 +24,14 @@ if(Input::exists()) {
             $response->data = $postData;
             echo json_encode($response);
         } else {
-            echo "You passed wrong data";
+            $errorList = new StdClass;
+            $errorList->errors = array();
+            $errorObj = new StdClass;
+            $errorObj->message = $error;
+            $errorList->errors[] = $errorObj;
+            echo json_encode($errorList);
         }
     } else {
-        $errorList = new StdClass;
-        $errorList->errors = array();
         foreach($validate->errors() as $error)
         {
             $errorObj = new StdClass;
